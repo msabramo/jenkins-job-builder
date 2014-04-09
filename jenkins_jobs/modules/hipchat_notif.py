@@ -42,12 +42,13 @@ If you set ``enabled: false``, no hipchat parameters are written to XML.
 # The global config object is therefore passed down to the registry object,
 # and this object is passed to the HipChat() class initialiser.
 
-import xml.etree.ElementTree as XML
-import jenkins_jobs.modules.base
-import jenkins_jobs.errors
-import logging
 import ConfigParser
+import logging
 import sys
+import xml.etree.ElementTree as XML
+
+import jenkins_jobs.errors
+import jenkins_jobs.modules.base
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +75,7 @@ class HipChat(jenkins_jobs.modules.base.Base):
                     raise jenkins_jobs.errors.JenkinsJobsException(
                         "Hipchat authtoken must not be a blank string")
             except (ConfigParser.NoSectionError,
-                    jenkins_jobs.errors.JenkinsJobsException), e:
+                    jenkins_jobs.errors.JenkinsJobsException) as e:
                 logger.fatal("The configuration file needs a hipchat section" +
                              " containing authtoken:\n{0}".format(e))
                 sys.exit(1)

@@ -37,11 +37,14 @@ Example::
 """
 
 
+import logging
 import xml.etree.ElementTree as XML
+
+from jenkins_jobs import errors
 import jenkins_jobs.modules.base
 from jenkins_jobs.modules import hudson_model
-from jenkins_jobs.errors import JenkinsJobsException
-import logging
+
+JenkinsJobsException = errors.JenkinsJobsException
 
 logger = logging.getLogger(__name__)
 
@@ -671,7 +674,7 @@ def conditional_step(parser, xml_parent, data):
 
             br = XML.SubElement(ctag, 'bestResult')
             br_name = cdata['condition-best']
-            if not br_name in hudson_model.THRESHOLDS:
+            if br_name not in hudson_model.THRESHOLDS:
                 raise JenkinsJobsException(
                     "threshold must be one of %s" %
                     ", ".join(hudson_model.THRESHOLDS.keys()))
